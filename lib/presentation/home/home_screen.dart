@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 item.name!,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w700,
+                                  fontSize: 14,
                                 ),
                               ),
                               if (count > 0)
@@ -78,12 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: const TextStyle(
                                     color: kPurpleColor,
                                     fontWeight: FontWeight.w700,
+                                    fontSize: 14,
                                   ),
                                 ),
                             ],
                           ),
                           initiallyExpanded: false,
-                          dense: false,
+                          dense: true,
                           // controlAffinity: ListTileControlAffinity.platform,
                           children: item.taxonomyList!.map((e) {
                             return InkWell(
