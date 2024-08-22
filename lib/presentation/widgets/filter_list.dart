@@ -10,6 +10,14 @@ class FilterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<FilterProvider>(builder: (context, provider, _) {
+      if (provider.isLoading) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * .7,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
       if (provider.filterList.isEmpty) {
         return const SizedBox.shrink();
       }
@@ -40,8 +48,10 @@ class FilterList extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
+
                       /// checking if id not null, ie, for multi-select
                       if (item.taxonomyList!.first.id != 0)
+
                         /// display count only if count > 0
                         if (count > 0)
                           Text(

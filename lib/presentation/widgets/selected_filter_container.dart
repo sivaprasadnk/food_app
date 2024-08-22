@@ -17,7 +17,9 @@ class SelectedFilterContainer extends StatelessWidget {
       return SizedBox(
         width: width,
         height: 35,
-        child: ListView.builder(
+        child: provider.isLoading
+            ? const SizedBox.shrink()
+            : ListView.builder(
           itemCount: provider.selected.length,
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,

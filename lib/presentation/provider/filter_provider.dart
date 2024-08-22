@@ -7,10 +7,12 @@ import 'package:food_app/domain/entity/taxonomy.dart';
 import 'package:food_app/domain/use_cases/get_filters.dart';
 
 class FilterProvider extends ChangeNotifier {
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   /// to store list from backend
   List<Filter> _filterList = [];
   List<Filter> get filterList => _filterList;
-
 
   /// to store selected filters
   List<Taxonomy> _selected = [];
@@ -19,11 +21,13 @@ class FilterProvider extends ChangeNotifier {
   FilterProvider(this.getFilters);
   GetFilters getFilters;
 
-
   /// calling api
   Future getData() async {
+    _isLoading = true;
+    notifyListeners();
     var resp = await locator<GetFilters>().call();
     _filterList = resp.$1!;
+    _isLoading = false;
     notifyListeners();
   }
 
