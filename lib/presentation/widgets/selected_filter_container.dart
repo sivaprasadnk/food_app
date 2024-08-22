@@ -3,6 +3,7 @@ import 'package:food_app/core/constant_colors.dart';
 import 'package:food_app/presentation/provider/filter_provider.dart';
 import 'package:provider/provider.dart';
 
+/// selected filters at top of screen
 class SelectedFilterContainer extends StatelessWidget {
   const SelectedFilterContainer({
     super.key,
@@ -24,6 +25,7 @@ class SelectedFilterContainer extends StatelessWidget {
             var item = provider.selected[index];
             return GestureDetector(
               onTap: () {
+                /// removing filter on tap
                 provider.removeFilter(item);
               },
               child: Container(

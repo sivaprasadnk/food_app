@@ -40,7 +40,9 @@ class FilterList extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
+                      /// checking if id not null, ie, for multi-select
                       if (item.taxonomyList!.first.id != 0)
+                        /// display count only if count > 0
                         if (count > 0)
                           Text(
                             ' ($count)',
@@ -57,7 +59,9 @@ class FilterList extends StatelessWidget {
                   children: item.taxonomyList!.map((e) {
                     return InkWell(
                       onTap: () {
+                        /// checking if multi-select
                         if (e.id != 0) {
+                          /// checking if already selected, then remove, else add
                           if (provider.selected.contains(e)) {
                             provider.removeFilter(e);
                           } else {
