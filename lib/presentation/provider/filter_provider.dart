@@ -10,6 +10,9 @@ class FilterProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  String _error = "";
+  String get error => _error;
+
   /// to store list from backend
   List<Filter> _filterList = [];
   List<Filter> get filterList => _filterList;
@@ -24,9 +27,13 @@ class FilterProvider extends ChangeNotifier {
   /// calling api
   Future getData() async {
     _isLoading = true;
+    _error = "";
     notifyListeners();
     var resp = await locator<GetFilters>().call();
     _filterList = resp.$1!;
+    if (_filterList.isEmpty) {
+      _error = resp.$2!.toString();
+    }
     _isLoading = false;
     notifyListeners();
   }

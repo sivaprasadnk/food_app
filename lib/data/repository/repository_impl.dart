@@ -7,14 +7,12 @@ class RepositoryImpl extends Repository {
   final RemoteDatasourceImpl remoteDataSource;
 
   @override
-  Future<(List<Filter>?, Error?)> getFilterData() async {
+  Future<(List<Filter>?, Exception?)> getFilterData() async {
     try {
       var resp = await remoteDataSource.getFilterData();
       return (resp.$1!, null);
     } catch (err) {
-      // print(" error :$err");
-
-      return (null, err as Error);
+      return (null, Exception('Error in fetching api'));
     }
   }
 }

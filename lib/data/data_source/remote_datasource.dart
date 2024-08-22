@@ -5,7 +5,7 @@ import 'package:food_app/data/model/filter_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class RemoteDataSource {
-  Future<(List<FilterModel>?, Error?)> getFilterData();
+  Future<(List<FilterModel>?, Exception?)> getFilterData();
 }
 
 class RemoteDatasourceImpl extends RemoteDataSource {
@@ -13,7 +13,7 @@ class RemoteDatasourceImpl extends RemoteDataSource {
   final http.Client client;
 
   @override
-  Future<(List<FilterModel>?, Error?)> getFilterData() async {
+  Future<(List<FilterModel>?, Exception?)> getFilterData() async {
     try {
       final response = await client.get(Uri.parse(kAPiUrl));
       if (response.statusCode == 200) {
@@ -23,10 +23,10 @@ class RemoteDatasourceImpl extends RemoteDataSource {
 
         return (filterList, null);
       } else {
-        return (null, Error());
+        return (null, Exception('Something went wrong!'));
       }
     } catch (err) {
-      throw Exception('Failed to load About Me details');
+      throw Exception('Something went wrong');
     }
   }
 }

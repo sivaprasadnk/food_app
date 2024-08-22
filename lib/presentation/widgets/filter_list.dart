@@ -19,6 +19,9 @@ class FilterList extends StatelessWidget {
         );
       }
       if (provider.filterList.isEmpty) {
+        if (provider.error.isNotEmpty) {
+          return Text(provider.error);
+        }
         return const SizedBox.shrink();
       }
       return Expanded(
