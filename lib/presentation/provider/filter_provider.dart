@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:food_app/core/locator.dart';
 import 'package:food_app/domain/entity/filter.dart';
@@ -8,13 +10,19 @@ class FilterProvider extends ChangeNotifier {
   List<Filter> _filterList = [];
   List<Filter> get filterList => _filterList;
 
-  final List<Taxonomy> _selected = [];
-  List<Taxonomy> get selected => _selected;
+  // List<int> _selectedCount = [];
+  // List<int> get selectedCount => _selectedCount;
 
-  FilterProvider(
-    this.getFilters,
-  );
-  final GetFilters getFilters;
+  // selectedCount(int item){
+  //   _s
+  // }
+
+  List<Taxonomy> _selected = [];
+  List<Taxonomy> get selected => _selected;
+  // set selected()
+
+  FilterProvider(this.getFilters);
+  GetFilters getFilters;
 
   Future getData() async {
     debugPrint('@@ getData');
@@ -32,5 +40,9 @@ class FilterProvider extends ChangeNotifier {
   removeFilter(Taxonomy item) {
     _selected.removeWhere((e) => e.id == item.id);
     notifyListeners();
+  }
+
+  int selectedCount(String id) {
+    return selected.where((e) => e.filterId == id).length;
   }
 }

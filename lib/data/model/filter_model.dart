@@ -13,7 +13,7 @@ class FilterModel extends Filter {
       name: json['name'] ?? "",
       slug: json['slug'] ?? "",
       taxonomyList: (json['taxonomies'] as List)
-          .map((e) => TaxonomyModel.fromJson(e))
+          .map((e) => TaxonomyModel.fromJson(e, json['slug'] ?? ""))
           .toList(),
     );
   }

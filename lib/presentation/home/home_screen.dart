@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/core/constant_colors.dart';
 import 'package:food_app/presentation/provider/filter_provider.dart';
+import 'package:food_app/presentation/widgets/selected_filter_container.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.arrow_back_ios_rounded),
@@ -40,41 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Consumer<FilterProvider>(builder: (context, provider, _) {
-              return SizedBox(
-                width: width,
-                height: 35,
-                child: ListView.builder(
-                  itemCount: provider.selected.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    var item = provider.selected[index];
-                    return GestureDetector(
-                      onTap: () {
-                        provider.removeFilter(item);
-                      },
-                      child: Container(
-                        height: 30,
-                        margin: const EdgeInsets.only(right: 8),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: kGreyColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          'X ${item.name}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }),
+            const SelectedFilterContainer(),
             const SizedBox(height: 20),
             Consumer<FilterProvider>(builder: (context, provider, _) {
               if (provider.filterList.isEmpty) {
@@ -85,10 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: provider.filterList.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
-
-                  // scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     var item = provider.filterList[index];
+                    var count = provider.selectedCount(item.slug!);
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: ClipRRect(
@@ -98,7 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           expandedAlignment: Alignment.centerLeft,
                           collapsedBackgroundColor: kWhiteColor,
                           expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                          title: Text(item.name!),
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                item.name!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              if (count > 0)
+                                Text(
+                                  ' ($count)',
+                                  style: const TextStyle(
+                                    color: kPurpleColor,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                            ],
+                          ),
                           initiallyExpanded: false,
                           dense: false,
                           // controlAffinity: ListTileControlAffinity.platform,
@@ -114,9 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20),
-                                // child: Row(
-                                //   children: [],
-                                // ),
                                 child: SizedBox(
                                   height: 50,
                                   child: Row(
@@ -156,16 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(e.name!),
                                     ],
                                   ),
-                                  // child: RadioListTile(
-                                  //   value: e.id!,
-                                  //   contentPadding: EdgeInsets.zero,
-                                  //   dense: false,
-                                  //   groupValue: e.guid,
-                                  //   onChanged: (value) {
-                                  //     provider.addFilters(e);
-                                  //   },
-                                  //   title: Text(e.name!),
-                                  // ),
                                 ),
                               ),
                             );
@@ -173,120 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     );
-                    //   child: ExpandablePanel(
-                    //     builder: (context, collapsed, expanded) {
-                    //       return Expandable(
-                    //         collapsed: collapsed,
-                    //         expanded: expanded,
-                    //       );
-                    //     },
-                    //     header: Container(
-                    //       // margin: const EdgeInsets.only(bottom: 10),
-                    //       color: kWhiteColor,
-                    //       child: Text(item.name!),
-                    //     ),
-
-                    //     collapsed: Container(
-                    //       color: kWhiteColor,
-                    //     ),
-                    //     expanded: Container(
-                    //       color: kWhiteColor,
-                    //       child: Text(item.taxonomyList!.first.name!),
-                    //     ),
-                    //     // collapsed: Text(i, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
-                    //     // expanded: Text(article.body, softWrap: true, ),
-                    //     // tapHeaderToExpand: true,
-                    //     // hasIcon: true,
-                    //   ),
-                    // );
-                    // return Container(
-                    //   height: 60,
-                    //   margin: const EdgeInsets.only(bottom: 8),
-                    //   padding: const EdgeInsets.all(8),
-                    //   decoration: BoxDecoration(
-                    //     color: kWhiteColor,
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   child: Text(
-                    //     item.name!,
-                    //     style: const TextStyle(
-                    //       fontWeight: FontWeight.w500,
-                    //       fontSize: 12,
-                    //     ),
-                    //   ),
-                    // );
-                    // return TapToExpand(
-
-                    //   outerClosedPadding: 8,
-                    //   titlePadding: EdgeInsets.zero,
-                    //   backgroundcolor: kWhiteColor,
-                    //   content: Text(item.taxonomyList!.first.name!),
-                    //   // content: Column(
-                    //   //   children: <Widget>[
-                    //   //     for (var i = 0; i < 20; i++)
-                    //   //       Text(
-                    //   //         "data $i",
-                    //   //         style: const TextStyle(
-                    //   //             color: Colors.white, fontSize: 20),
-                    //   //       ),
-                    //   //   ],
-                    //   // ),
-                    //   title: Text(
-                    //     item.name!,
-                    //     style: const TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 12,
-                    //     ),
-                    //   ),
-                    //   // onTapPadding: 10,
-                    //   closedHeight: 70,
-                    //   // scrollable: true,
-                    //   // borderRadius: 10,
-                    //   openedHeight: 200,
-                    // );
                   },
                 ),
-                // child: ExpandedTileList.builder(
-                //   itemCount: provider.filterList.length,
-                //   shrinkWrap: true,
-                //   padding: const EdgeInsets.only(bottom: 10),
-                //   itemBuilder: (context, index, controller) {
-                //     var item = provider.filterList[index];
-
-                //     return ExpandedTile(
-                //       title: Padding(
-                //         padding: const EdgeInsets.only(bottom: 10),
-                //         child: Text(item.name!),
-                //       ),
-                //       content: Text(item.taxonomyList!.first.name!),
-                //       controller: controller,
-                //     );
-                //   },
-                // ),
-                // child: TapToExpand(
-                //   content: Column(
-                //     children: <Widget>[
-                //       for (var i = 0; i < 20; i++)
-                //         Text(
-                //           "data $i",
-                //           style: const TextStyle(
-                //               color: Colors.white, fontSize: 20),
-                //         ),
-                //     ],
-                //   ),
-                //   title: const Text(
-                //     'TapToExpand',
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 20,
-                //     ),
-                //   ),
-                //   // onTapPadding: 10,
-                //   closedHeight: 70,
-                //   // scrollable: true,
-                //   // borderRadius: 10,
-                //   openedHeight: 200,
-                // ),
               );
             })
           ],
@@ -295,3 +153,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
