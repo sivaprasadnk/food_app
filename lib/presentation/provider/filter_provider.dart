@@ -38,7 +38,7 @@ class FilterProvider extends ChangeNotifier {
   }
 
   removeFilter(Taxonomy item) {
-    _selected.removeWhere((e) => e.id == item.id);
+    _selected.removeWhere((e) => e.slug == item.slug);
     notifyListeners();
   }
 
