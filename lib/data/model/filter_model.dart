@@ -9,10 +9,21 @@ class FilterModel extends Filter {
   });
 
   factory FilterModel.fromJson(Map<String, dynamic> json) {
+    List list = json['taxonomies'] as List;
+    if (!(list.first as Map).containsKey('locations')) {
+      return FilterModel(
+        name: json['name'] ?? "",
+        slug: json['slug'] ?? "",
+        taxonomyList: (list)
+            .map((e) => TaxonomyModel.fromJson(e, json['slug'] ?? ""))
+            .toList(),
+      );
+    }
+    list = (list.first as Map)['locations'];
     return FilterModel(
       name: json['name'] ?? "",
       slug: json['slug'] ?? "",
-      taxonomyList: (json['taxonomies'] as List)
+      taxonomyList: (list)
           .map((e) => TaxonomyModel.fromJson(e, json['slug'] ?? ""))
           .toList(),
     );

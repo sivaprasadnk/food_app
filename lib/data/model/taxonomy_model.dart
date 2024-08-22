@@ -16,7 +16,6 @@ class TaxonomyModel extends Taxonomy {
       slug: json['slug'] ?? "",
       name: json['name'] ?? "",
       filterId: filterId,
-      
     );
   }
 }

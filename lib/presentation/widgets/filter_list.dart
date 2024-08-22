@@ -40,15 +40,16 @@ class FilterList extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
-                      if (count > 0)
-                        Text(
-                          ' ($count)',
-                          style: const TextStyle(
-                            color: kPurpleColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                      if (item.taxonomyList!.first.id != 0)
+                        if (count > 0)
+                          Text(
+                            ' ($count)',
+                            style: const TextStyle(
+                              color: kPurpleColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
                     ],
                   ),
                   initiallyExpanded: false,
@@ -56,10 +57,14 @@ class FilterList extends StatelessWidget {
                   children: item.taxonomyList!.map((e) {
                     return InkWell(
                       onTap: () {
-                        if (provider.selected.contains(e)) {
-                          provider.removeFilter(e);
+                        if (e.id != 0) {
+                          if (provider.selected.contains(e)) {
+                            provider.removeFilter(e);
+                          } else {
+                            provider.addMutliSelect(e);
+                          }
                         } else {
-                          provider.addFilters(e);
+                          provider.addSingleSelect(e);
                         }
                       },
                       child: CustomRadioButton(
