@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         title: 'Food App',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
+            scrolledUnderElevation: 0,
             backgroundColor: kTransparentColor,
             foregroundColor: kBlackColor,
           ),
